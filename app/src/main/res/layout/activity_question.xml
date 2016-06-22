@@ -4,6 +4,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@drawable/noshadow">
+
+
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -11,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
 
 
         <RelativeLayout
@@ -131,6 +134,17 @@
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/heartImageView"/>
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/settingsButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@null"
+            android:src="@drawable/settings"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"/>
 
 
     </RelativeLayout>

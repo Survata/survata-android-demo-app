@@ -8,6 +8,7 @@ import survata.com.survatasays.R;
 
 public class Settings {
 
+
     public static String getPublisherId(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String publisherIdString = context.getString(R.string.publisher_id);

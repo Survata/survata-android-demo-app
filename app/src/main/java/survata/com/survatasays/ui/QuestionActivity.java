@@ -3,18 +3,20 @@ package survata.com.survatasays.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.survata.Survey;
-import com.survata.SurveyOption;
 
 import java.util.Random;
 
@@ -36,6 +38,7 @@ public class QuestionActivity extends Activity{
     private Survey mSurvey;
     private Button mCreateSurvey;
     private ViewGroup mContainer;
+    private ImageButton mSettingsButton;
 
     private int index;
     private int currentPercentage = 50;
@@ -60,6 +63,7 @@ public class QuestionActivity extends Activity{
         mEnterButton = (Button) findViewById(R.id.enterButton);
         mHeartImageView = (ImageView) findViewById(R.id.heartImageView);
         mContainer = (ViewGroup) findViewById(R.id.container);
+        mSettingsButton = (ImageButton) findViewById(R.id.settingsButton);
 
         currentLife = 100;
         mLifeTextView.setText(currentLife + "%");
@@ -77,6 +81,13 @@ public class QuestionActivity extends Activity{
             @Override
             public void onClick(View v) {
                 showSurvey();
+            }
+        });
+
+        mSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSettings();
             }
         });
 
@@ -135,16 +146,31 @@ public class QuestionActivity extends Activity{
     public void checkSurvey() {
         // show loading default
         showLoadingSurveyView();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean demoModeBool = prefs.getBoolean("demo_mode_switch", true);
+        final Context context = this;
 
-        final Context context = getApplicationContext();
-        String publisherId = Settings.getPublisherId(context);
-        SurveyOption option = new SurveyOption(publisherId);
-//        option.preview = Settings.getPreviewId(context);
-//        option.zipcode = Settings.getZipCode(context);
-//        option.sendZipcode = Settings.getZipCodeEnable(context);
-        option.contentName = Settings.getContentName(context);
+        if(demoModeBool){
 
-        mSurvey = new Survey(option);
+            String publisherId = "survata-test";
+            SurveyDebugOption option = new SurveyDebugOption(publisherId);
+            option.preview = "5fd725139884422e9f1bb28f776c702d";
+//            option.zipcode = Settings.getZipCode(context);
+//            option.sendZipcode = Settings.getZipCodeEnable(context);
+            option.testing = true;
+            option.contentName = Settings.getContentName(context);
+            mSurvey = new Survey(option);
+        } else {
+            String publisherId = Settings.getPublisherId(context);
+            SurveyDebugOption option = new SurveyDebugOption(publisherId);
+//            option.preview = Settings.getPreviewId(context);
+//            option.zipcode = Settings.getZipCode(context);
+//            option.sendZipcode = Settings.getZipCodeEnable(context);
+            option.contentName = Settings.getContentName(context);
+            option.testing = true;
+            mSurvey = new Survey(option);
+        }
+
 //        Survey.setSurvataLogger(mSurvataLogger);
         mSurvey.create(this, //getActivity();
                 new Survey.SurveyAvailabilityListener() {
@@ -179,40 +205,43 @@ public class QuestionActivity extends Activity{
 
         final Activity activity = this;
 
-        mSurvey.createSurveyWall(activity, new Survey.SurveyStatusListener() {
-            @Override
-            public void onEvent(Survey.SurveyEvents surveyEvents) {
-                Log.d(TAG, "surveyEvents: " + surveyEvents);
 
-                String info = "";
-                switch (surveyEvents){
+            mSurvey.createSurveyWall(activity, new Survey.SurveyStatusListener() {
+                @Override
+                public void onEvent(Survey.SurveyEvents surveyEvents) {
+                    Log.d(TAG, "surveyEvents: " + surveyEvents);
 
-                    case COMPLETED:
-                        info = "completed";
-                        currentLife += 20;
-                        showFullView();
-                        break;
-                    case SKIPPED:
-                        info = "skipped";
-                        break;
-                    case CANCELED:
-                        info = "canceled";
-                        break;
-                    case CREDIT_EARNED:
-                        info = "credit earned";
-                        break;
-                    case NO_SURVEY_AVAILABLE:
-                        info = "no survey available";
-                        break;
-                    case NETWORK_NOT_AVAILABLE:
-                        info = "network not available";
-                        break;
-                    default:
-                        break;
+                    String info = "";
+                    switch (surveyEvents) {
+
+                        case COMPLETED:
+                            info = "completed";
+                            currentLife += 40;
+                            mLifeTextView.setText(currentLife + "%");
+                            showFullView();
+                            break;
+                        case SKIPPED:
+                            info = "skipped";
+                            break;
+                        case CANCELED:
+                            info = "canceled";
+                            break;
+                        case CREDIT_EARNED:
+                            info = "credit earned";
+                            break;
+                        case NO_SURVEY_AVAILABLE:
+                            info = "no survey available";
+                            break;
+                        case NETWORK_NOT_AVAILABLE:
+                            info = "network not available";
+                            break;
+                        default:
+                            break;
+                    }
+                    //Toast.makeText(activity, "'surveyWall': : " + info, Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(activity, "'surveyWall': : " + info, Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+
     }
 
     private void showFullView() {
@@ -231,9 +260,15 @@ public class QuestionActivity extends Activity{
         mContainer.setVisibility(View.VISIBLE);
     }
 
+    private void showSettings(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        checkSurvey();
         currentLife = 100;
         mLifeTextView.setText(currentLife + "%");
         qsAnswered = 0;
