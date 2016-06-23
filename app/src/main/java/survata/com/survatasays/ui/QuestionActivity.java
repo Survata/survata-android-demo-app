@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.survata.Survey;
 import com.survata.SurveyOption;
 
+import java.io.Serializable;
+import java.util.Map;
 import java.util.Random;
 
 import survata.com.survatasays.R;
@@ -45,6 +47,40 @@ public class QuestionActivity extends Activity{
 
     private Question mCurrentQuestion;
     private Questions mQuestions = new Questions();
+
+    private class SurveyDebugOption extends SurveyOption implements Survey.SurveyDebugOptionInterface, Serializable {
+
+        public String preview;
+        public String zipcode;
+        public boolean sendZipcode = true;
+
+        public SurveyDebugOption(String publisher) {
+            super(publisher);
+        }
+
+        @Override
+        public Map<String, String> getParams() {
+            Map<String, String> params = super.getParams();
+            params.put("preview", preview);
+            return params;
+        }
+
+        @Override
+        public String getPreview() {
+            return preview;
+        }
+
+        @Override
+        public String getZipcode() {
+            return zipcode;
+        }
+
+        @Override
+        public boolean getSendZipcode() {
+            return sendZipcode;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +174,8 @@ public class QuestionActivity extends Activity{
 
         final Context context = getApplicationContext();
         String publisherId = Settings.getPublisherId(context);
-        SurveyOption option = new SurveyOption(publisherId);
-//        option.preview = Settings.getPreviewId(context);
+        SurveyDebugOption option = new SurveyDebugOption(publisherId);
+        option.preview = Settings.getPreviewId(context);
 //        option.zipcode = Settings.getZipCode(context);
 //        option.sendZipcode = Settings.getZipCodeEnable(context);
         option.contentName = Settings.getContentName(context);
