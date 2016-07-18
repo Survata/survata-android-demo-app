@@ -86,7 +86,7 @@ There is another class called **SurveyDebugOption** (subclass of SurveyOption) i
 ### Step 5  
 
 Show survey in WebView. Should called after checkSurvey();
-It will return the survey events (COMPLETED, SKIPPED, CANCELED, CREDIT_EARNED, NETWORK_NOT_AVAILABLE, NO_SURVEY_AVAILABLE).
+It will return the survey events (COMPLETED, SKIPPED, CANCELED, CREDIT_EARNED, NETWORK_NOT_AVAILABLE, NO_SURVEY_AVAILABLE). NO_SURVEY_AVAILABLE happens when users are under 13, when they have reached the frequency cap for surveys a day, etc. 
 
 ```java
      private void showSurvey() {
