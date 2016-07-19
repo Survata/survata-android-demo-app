@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.survata.Survey;
+import com.survata.SurveyOption;
 
 import java.util.Random;
 
@@ -149,30 +150,21 @@ public class QuestionActivity extends Activity{
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean demoModeBool = prefs.getBoolean("demo_mode_switch", true);
         final Context context = this;
+        String publisherId = Settings.getPublisherId(context);
 
         if(demoModeBool){
-
-            String publisherId = "survata-test";
             SurveyDebugOption option = new SurveyDebugOption(publisherId);
-            option.preview = "5fd725139884422e9f1bb28f776c702d";
-//            option.zipcode = Settings.getZipCode(context);
-//            option.sendZipcode = Settings.getZipCodeEnable(context);
+            option.preview =                                                                                                                                                          "5fd725139884422e9f1bb28f776c702d";
             option.testing = true;
             option.contentName = Settings.getContentName(context);
             mSurvey = new Survey(option);
         } else {
-            String publisherId = Settings.getPublisherId(context);
-            SurveyDebugOption option = new SurveyDebugOption(publisherId);
-//            option.preview = Settings.getPreviewId(context);
-//            option.zipcode = Settings.getZipCode(context);
-//            option.sendZipcode = Settings.getZipCodeEnable(context);
+            SurveyOption option = new SurveyOption(publisherId);
             option.contentName = Settings.getContentName(context);
-            option.testing = true;
             mSurvey = new Survey(option);
         }
-
 //        Survey.setSurvataLogger(mSurvataLogger);
-        mSurvey.create(this, //getActivity();
+        mSurvey.create(this,
                 new Survey.SurveyAvailabilityListener() {
                     @Override
                     public void onSurveyAvailable(Survey.SurveyAvailability surveyAvailability) {
