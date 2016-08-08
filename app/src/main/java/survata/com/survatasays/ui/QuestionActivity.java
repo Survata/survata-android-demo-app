@@ -151,10 +151,9 @@ public class QuestionActivity extends Activity{
         boolean demoModeBool = prefs.getBoolean("demo_mode_switch", true);
         final Context context = this;
         String publisherId = Settings.getPublisherId(context);
-
         if(demoModeBool){
-            SurveyDebugOption option = new SurveyDebugOption(publisherId);
-            option.preview =                                                                                                                                                          "5fd725139884422e9f1bb28f776c702d";
+            SurveyOption option = new SurveyOption(publisherId);
+            option.preview = "5fd725139884422e9f1bb28f776c702d";
             option.testing = true;
             option.contentName = Settings.getContentName(context);
             mSurvey = new Survey(option);
