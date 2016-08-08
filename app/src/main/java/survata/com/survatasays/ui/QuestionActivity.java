@@ -207,7 +207,7 @@ public class QuestionActivity extends Activity{
 
                         case COMPLETED:
                             info = "completed";
-                            currentLife += 40;
+                            currentLife += 20;
                             mLifeTextView.setText(currentLife + "%");
                             showFullView();
                             break;
