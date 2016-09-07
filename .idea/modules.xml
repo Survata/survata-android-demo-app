@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SurvataSays-Android.iml" filepath="$PROJECT_DIR$/SurvataSays-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/survata-android-demo-app.iml" filepath="$PROJECT_DIR$/survata-android-demo-app.iml" />
     </modules>
   </component>
 </project>
+
