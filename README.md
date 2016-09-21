@@ -8,10 +8,11 @@ Demo app for the Survata SDK. Android SDK is located [here](https://github.com/S
 ### Step 1
 
 Add dependencies in `build.gradle`.
+The current version is 1.0.14 (9/20/2016) please check the survata android sdk README [here](https://github.com/Survata/survata-android-public-sdk) for the latest version
 
 ```groovy
         dependencies {
-            compile 'com.survata.android:library:1.0.10'
+            compile 'com.survata.android:library:1.0.14'
         }
 ```
 ### Step 2
