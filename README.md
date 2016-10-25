@@ -12,7 +12,7 @@ The current version is 1.0.14 (9/20/2016) please check the survata android sdk R
 
 ```groovy
         dependencies {
-            compile 'com.survata.android:library:1.0.14'
+            compile 'com.survata.android:Survata:1.0.+'
         }
 ```
 ### Step 2
